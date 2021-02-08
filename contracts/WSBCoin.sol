@@ -26,7 +26,7 @@ contract WSBCoin is IERC20 {
     string private _name;
     string private _symbol;
     uint8 private _decimals;
-    bool private initialized;
+    bool private _initialized;
 
     /*constructor (uint256 initialSupply_, string memory name_, string memory symbol_) {
         _mint(msg.sender, initialSupply_);
@@ -41,8 +41,8 @@ contract WSBCoin is IERC20 {
         string memory name_,
         string memory symbol_
     ) public {
-        require(!initialized, "Contract instance has already been initialized"); //allow initializing only once
-        initialized = true;
+        require(!_initialized, "Contract instance has already been initialized"); //allow initializing only once
+        _initialized = true;
         _name = name_; //for display only
         _symbol = symbol_; //for display only
         _decimals = 0; //for display only
@@ -157,14 +157,14 @@ contract WSBCoin is IERC20 {
         emit Transfer(sender, recipient, amount);
     }
 
-    function _increaseAllowance(address spender, uint256 value)
+    function increaseAllowance(address spender, uint256 value)
         public
         returns (bool success)
     {
         return approve(spender, _allowances[spender][msg.sender].add(value));
     }
 
-    function _decreaseAllowance(address spender, uint256 value)
+    function decreaseAllowance(address spender, uint256 value)
         public
         returns (bool success)
     {

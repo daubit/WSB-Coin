@@ -58,7 +58,16 @@ module.exports = {
       networkCheckTimeout: 10000000,
       //host: '127.0.0.1',
       //port: 8545,
-      //from: '0x4a4962AaC13533074E3436B919568Eca05B3427b'
+    },
+
+    live: {
+      provider: function () {
+        return new HDWalletProvider(mnemonic, "wss://mainnet.infura.io/ws/v3/ace8e214e521445cbad164cd11994d56")
+      },
+      network_id: '1',
+      networkCheckTimeout: 10000000,
+      //host: '127.0.0.1',
+      //port: 8545,
     },
     // Another network with more advanced options...
     // advanced: {
