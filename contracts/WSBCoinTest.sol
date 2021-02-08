@@ -11,7 +11,7 @@ contract WSBCoinTest is WSBCoin {
         _mint(account,amount);
     }
 
-    function burn(address account, uint256 amount) public virtual {
+    /*function burn(address account, uint256 amount) public virtual {
         _burn(account, amount);
-    }
+    }*/
 }

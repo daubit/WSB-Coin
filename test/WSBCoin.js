@@ -21,7 +21,7 @@ contract('WSBCoinTest', (accounts) => {
 
     assert.equal(accountEndingBalance, accountStartingBalance + amount, "did not mint tokens");
   });
-  it('should burn tokens correctly', async () => {
+  /*it('should burn tokens correctly', async () => {
     const instance = await WSBCoin.deployed();
 
     const account = accounts[0];
@@ -33,7 +33,7 @@ contract('WSBCoinTest', (accounts) => {
     const accountEndingBalance = (await instance.balanceOf.call(account)).toNumber();
 
     assert.equal(accountEndingBalance, accountStartingBalance - amount, "did not burn tokens");
-  });
+  });*/
   it('should send token correctly', async () => {
     const instance = await WSBCoin.deployed();
 

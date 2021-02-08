@@ -41,7 +41,10 @@ contract WSBCoin is IERC20 {
         string memory name_,
         string memory symbol_
     ) public {
-        require(!_initialized, "Contract instance has already been initialized"); //allow initializing only once
+        require(
+            !_initialized,
+            "Contract instance has already been initialized"
+        ); //allow initializing only once
         _initialized = true;
         _name = name_; //for display only
         _symbol = symbol_; //for display only
@@ -101,14 +104,7 @@ contract WSBCoin is IERC20 {
         override
         returns (bool)
     {
-        require(
-            msg.sender != address(0),
-            "WSB: cant approve from the zero address"
-        );
-        require(spender != address(0), "WSB: cant approve to the zero address");
-
-        _allowances[msg.sender][spender] = amount;
-        emit Approval(msg.sender, spender, amount);
+        _approve(msg.sender, spender, amount);
         return true;
     }
 
@@ -117,18 +113,22 @@ contract WSBCoin is IERC20 {
         address recipient,
         uint256 amount
     ) public virtual override returns (bool) {
+        require(_allowances[sender][msg.sender] >= amount, "WSB: transfer amount exceeds allowance");
         _transfer(sender, recipient, amount);
-
-        require(
-            _allowances[sender][msg.sender] >= amount,
-            "WSB: transfer amount exceeds allowance"
-        );
-        _allowances[sender][msg.sender] = _allowances[sender][msg.sender].sub(
-            amount,
-            "WSB: transfer amount exceeds allowance"
-        );
-        emit Approval(sender, msg.sender, amount);
+        _approve(sender, msg.sender, _allowances[sender][msg.sender].sub(amount));
         return true;
+    }
+
+    function _approve(
+        address owner,
+        address spender,
+        uint256 amount
+    ) internal virtual {
+        require(owner != address(0), "ERC20: approve from the zero address");
+        require(spender != address(0), "ERC20: approve to the zero address");
+
+        _allowances[owner][spender] = amount;
+        emit Approval(owner, spender, amount);
     }
 
     function _transfer(
@@ -183,7 +183,7 @@ contract WSBCoin is IERC20 {
         emit Transfer(address(0), account, amount);
     }
 
-    function _burn(address account, uint256 amount) internal virtual {
+    /*function _burn(address account, uint256 amount) internal virtual {
         require(account != address(0), "WSB: cant burn on zero adress");
 
         _balances[account] = _balances[account].sub(
@@ -192,5 +192,5 @@ contract WSBCoin is IERC20 {
         );
         _totalSupply = _totalSupply.sub(amount);
         emit Transfer(account, address(0), amount);
-    }
+    }*/
 }
